@@ -9,26 +9,37 @@ class Enigma {
     int posicion3;
     boolean primeraPulsacion;
 
-    public Enigma() {
-        posicion1 = 0;
-        posicion2 = 0;
-        posicion3 = 0;
+//    public Enigma() {
+//        posicion1 = 0;
+//        posicion2 = 0;
+//        posicion3 = 0;
+//        primeraPulsacion = true;
+//
+//        rotor1 = new Rotor('R');
+//        rotor2 = new Rotor('F');
+//        rotor3 = new Rotor('W');
+//    }
+
+//    public Enigma(int posicion1, int posicion2, int posicion3) {
+//        this.posicion1 = posicion1;
+//        this.posicion2 = posicion2;
+//        this.posicion3 = posicion3;
+//        primeraPulsacion = true;
+//
+//        rotor1 = new Rotor('R');
+//        rotor2 = new Rotor('F');
+//        rotor3 = new Rotor('W');
+//    }
+
+    public Enigma(char posicion1, char posicion2, char posicion3, int tipoRotor1, int tipoRotor2,int tipoRotor3) throws Exception {
+        this.posicion1 = posicion1 - 65;
+        this.posicion2 = posicion2 - 65;
+        this.posicion3 = posicion3 - 65;
         primeraPulsacion = true;
 
-        rotor1 = new Rotor('R');
-        rotor2 = new Rotor('F');
-        rotor3 = new Rotor('W');
-    }
-
-    public Enigma(int posicion1, int posicion2, int posicion3) {
-        this.posicion1 = posicion1;
-        this.posicion2 = posicion2;
-        this.posicion3 = posicion3;
-        primeraPulsacion = true;
-
-        rotor1 = new Rotor('R');
-        rotor2 = new Rotor('F');
-        rotor3 = new Rotor('W');
+        rotor1 = new Rotor(tipoRotor1);
+        rotor2 = new Rotor(tipoRotor2);
+        rotor3 = new Rotor(tipoRotor3);
     }
 
     private void girarRotores() {
@@ -66,7 +77,7 @@ class Enigma {
         //System.out.println("----------- CLAVIJERO -----------");
         //Cambiar una letra por otra
         //System.out.println("----------- IDA -----------");
-        char letraCodificada = Rotor.III[(letra - 'A' + posicion3) % 26];
+        char letraCodificada = rotor3.letras[(letra - 'A' + posicion3) % 26];
 
         if (((letraCodificada - 65) - posicion3) >= 0) {
             indice = (letraCodificada - 65) - posicion3;
@@ -75,7 +86,7 @@ class Enigma {
         }
 
         letraCodificada = Rotor.alfabeto[(indice + posicion2) % 26];
-        letraCodificada = Rotor.II[(letraCodificada - 'A') % 26];
+        letraCodificada = rotor2.letras[(letraCodificada - 'A') % 26];
         if ((letraCodificada - 65) - posicion2 >= 0) {
             indice = (letraCodificada - 65) - posicion2;
         } else {
@@ -83,7 +94,7 @@ class Enigma {
         }
         letraCodificada = Rotor.alfabeto[(indice + posicion1) % 26];
 
-        letraCodificada = Rotor.I[(letraCodificada - 'A') % 26];
+        letraCodificada = rotor1.letras[(letraCodificada - 'A') % 26];
 
         //System.out.println("----------- REFLECTOR -----------");
         if ((letraCodificada - 'A' - posicion1) >= 0) {
@@ -98,7 +109,7 @@ class Enigma {
         } else {
             indice = letraCodificada + posicion1;
         }
-        letraCodificada = (char) (new String(Rotor.I).indexOf(indice) + 65);
+        letraCodificada = (char) (new String(rotor1.letras).indexOf(indice) + 65);
         if ((letraCodificada + posicion2 - posicion1) > 'Z') {
             indice = (letraCodificada + posicion2 - posicion1 - 'Z') + 64;
         } else if ((letraCodificada + posicion2 - posicion1) < 'A') {
@@ -106,7 +117,7 @@ class Enigma {
         } else {
             indice = letraCodificada + posicion2 - posicion1;
         }
-        letraCodificada = (char) (new String(Rotor.II).indexOf(indice) + 65);
+        letraCodificada = (char) (new String(rotor2.letras).indexOf(indice) + 65);
         if (letraCodificada + posicion3 - posicion2 > 'Z') {
             indice = (letraCodificada + posicion3 - 'Z') + 64 - posicion2;
         } else if (letraCodificada + posicion3 - posicion2 < 'A') {
@@ -114,7 +125,7 @@ class Enigma {
         } else {
             indice = letraCodificada + posicion3 - posicion2;
         }
-        letraCodificada = (char) (new String(Rotor.III).indexOf(indice) + 65);
+        letraCodificada = (char) (new String(rotor3.letras).indexOf(indice) + 65);
 
         if (letraCodificada - posicion3 < 'A') {
             indice = 'Z' + letraCodificada - posicion3 - 64;
@@ -135,10 +146,11 @@ class Enigma {
         return cadena.toString();
     }
 
-    public static void main(String[] args) {
-        Enigma maquina = new Enigma('A' - 65, 'E' - 65, 'V' - 65);
+    public static void main(String[] args) throws Exception {
+        //Enigma maquina = new Enigma('A' - 65, 'E' - 65, 'V' - 65);
+        Enigma maquina = new Enigma('A','A','A',1,2,3);
         String texto = maquina.codificarTexto("AAAAAAAAAAA");
-        System.out.println(texto.equals("GIBMGFJBWZF"));
+        System.out.println(texto.equals("BDZGOWCXLT"));
         System.out.println(texto);
     }
 }
