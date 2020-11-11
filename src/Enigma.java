@@ -156,7 +156,7 @@ class Enigma {
     private String codificarTexto(String texto) {
         StringBuffer cadena = new StringBuffer();
         for (int i = 0; i < texto.length(); i++) {
-            char letra = codificarLetra(texto.charAt(i));
+            char letra = codificarLetra(Character.toUpperCase(texto.charAt(i)));
             cadena.append(letra);
         }
         return cadena.toString();
