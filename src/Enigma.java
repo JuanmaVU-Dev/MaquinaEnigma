@@ -66,7 +66,7 @@ class Enigma {
             posicion3 = (posicion3 + 1) % 26;
             if (rotor3.esLetraClave(posicion3)) {
                 posicion2 = (posicion2 + 1) % 26;
-                System.out.println("gira rotor 2");
+                //System.out.println("gira rotor 2");
                 if (rotor2.esLetraClave(posicion2)) {
                     posicion1 = (posicion1 + 1) % 26;
                     //System.out.println("gira rotor 1");
@@ -163,7 +163,8 @@ class Enigma {
     }
 
     public static void main(String[] args) throws Exception {
-        Enigma maquina = new Enigma(args[0].charAt(0),args[0].charAt(1),args[0].charAt(2),Character.getNumericValue(args[0].charAt(3)),Character.getNumericValue(args[0].charAt(4)),Character.getNumericValue(args[0].charAt(5)),
+        Enigma maquina = new Enigma(args[0].charAt(0),args[0].charAt(1),args[0].charAt(2),
+                Character.getNumericValue(args[0].charAt(3)),Character.getNumericValue(args[0].charAt(4)),Character.getNumericValue(args[0].charAt(5)),
                 Character.toUpperCase(args[1].charAt(0)), Character.toUpperCase(args[1].charAt(1)));
         String texto = maquina.codificarTexto(args[2]);
         System.out.println(texto);
