@@ -13,7 +13,7 @@ public class Clavija {
     public char letra1;
     public char letra2;
 
-    public char intermcambiarLetra(char letra){
+    public char intercambiarLetra(char letra){
         if(letra == letra1){
             return letra2;
         }

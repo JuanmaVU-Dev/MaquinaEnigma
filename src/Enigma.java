@@ -90,7 +90,7 @@ class Enigma {
         int indice;
         //System.out.println("----------- CLAVIJERO -----------");
         //Cambiar una letra por otra
-        char letraCodificada = clavija.intermcambiarLetra(letra);
+        char letraCodificada = clavija.intercambiarLetra(letra);
         //System.out.println("----------- IDA -----------");
         letraCodificada = rotor3.letras[(letraCodificada - 'A' + posicion3) % 26];
 
@@ -149,7 +149,7 @@ class Enigma {
         }
         letraCodificada = (char) (indice);
         //System.out.println("----------- CLAVIJERO -----------");
-        letraCodificada = clavija.intermcambiarLetra(letraCodificada);
+        letraCodificada = clavija.intercambiarLetra(letraCodificada);
         return letraCodificada;
     }
 
