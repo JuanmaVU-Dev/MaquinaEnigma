@@ -8,28 +8,29 @@ class Enigma {
     int posicion2;
     int posicion3;
     boolean primeraPulsacion;
+    Clavija clavija;
 
-//    public Enigma() {
-//        posicion1 = 0;
-//        posicion2 = 0;
-//        posicion3 = 0;
-//        primeraPulsacion = true;
-//
-//        rotor1 = new Rotor('R');
-//        rotor2 = new Rotor('F');
-//        rotor3 = new Rotor('W');
-//    }
+    public Enigma() {
+        posicion1 = 0;
+        posicion2 = 0;
+        posicion3 = 0;
+        primeraPulsacion = true;
 
-//    public Enigma(int posicion1, int posicion2, int posicion3) {
-//        this.posicion1 = posicion1;
-//        this.posicion2 = posicion2;
-//        this.posicion3 = posicion3;
-//        primeraPulsacion = true;
-//
-//        rotor1 = new Rotor('R');
-//        rotor2 = new Rotor('F');
-//        rotor3 = new Rotor('W');
-//    }
+        rotor1 = new Rotor('R');
+        rotor2 = new Rotor('F');
+        rotor3 = new Rotor('W');
+    }
+
+    public Enigma(int posicion1, int posicion2, int posicion3) {
+        this.posicion1 = posicion1;
+        this.posicion2 = posicion2;
+        this.posicion3 = posicion3;
+        primeraPulsacion = true;
+
+        rotor1 = new Rotor('R');
+        rotor2 = new Rotor('F');
+        rotor3 = new Rotor('W');
+    }
 
     public Enigma(char posicion1, char posicion2, char posicion3, int tipoRotor1, int tipoRotor2,int tipoRotor3) throws Exception {
         this.posicion1 = posicion1 - 65;
@@ -40,6 +41,19 @@ class Enigma {
         rotor1 = new Rotor(tipoRotor1);
         rotor2 = new Rotor(tipoRotor2);
         rotor3 = new Rotor(tipoRotor3);
+        clavija = new Clavija();
+    }
+
+    public Enigma(char posicion1, char posicion2, char posicion3, int tipoRotor1, int tipoRotor2,int tipoRotor3, char letra1, char letra2) throws Exception {
+        this.posicion1 = posicion1 - 65;
+        this.posicion2 = posicion2 - 65;
+        this.posicion3 = posicion3 - 65;
+        primeraPulsacion = true;
+
+        rotor1 = new Rotor(tipoRotor1);
+        rotor2 = new Rotor(tipoRotor2);
+        rotor3 = new Rotor(tipoRotor3);
+        clavija = new Clavija(letra1, letra2);
     }
 
     private void girarRotores() {
@@ -47,7 +61,7 @@ class Enigma {
             posicion3 = (posicion3 + 1) % 26;
             posicion2 = (posicion2 + 1) % 26;
             posicion1  = (posicion1 +1) % 26;
-            System.out.println("Cambio en primera pulsacion");
+            //System.out.println("Cambio en primera pulsacion");
         }else{
             posicion3 = (posicion3 + 1) % 26;
             if (rotor3.esLetraClave(posicion3)) {
@@ -55,7 +69,7 @@ class Enigma {
                 System.out.println("gira rotor 2");
                 if (rotor2.esLetraClave(posicion2)) {
                     posicion1 = (posicion1 + 1) % 26;
-                    System.out.println("gira rotor 1");
+                    //System.out.println("gira rotor 1");
                 }
             }
 
@@ -64,7 +78,7 @@ class Enigma {
                 posicion2 = (posicion2 + 1) % 26;
                 if (rotor2.esLetraClave(posicion2)) {
                     posicion1 = (posicion1 + 1) % 26;
-                    System.out.println("doble paso");
+                    //System.out.println("doble paso");
                 }
             }
         }
@@ -76,8 +90,9 @@ class Enigma {
         int indice;
         //System.out.println("----------- CLAVIJERO -----------");
         //Cambiar una letra por otra
+        char letraCodificada = clavija.intermcambiarLetra(letra);
         //System.out.println("----------- IDA -----------");
-        char letraCodificada = rotor3.letras[(letra - 'A' + posicion3) % 26];
+        letraCodificada = rotor3.letras[(letraCodificada - 'A' + posicion3) % 26];
 
         if (((letraCodificada - 65) - posicion3) >= 0) {
             indice = (letraCodificada - 65) - posicion3;
@@ -134,6 +149,7 @@ class Enigma {
         }
         letraCodificada = (char) (indice);
         //System.out.println("----------- CLAVIJERO -----------");
+        letraCodificada = clavija.intermcambiarLetra(letraCodificada);
         return letraCodificada;
     }
 
@@ -147,10 +163,9 @@ class Enigma {
     }
 
     public static void main(String[] args) throws Exception {
-        //Enigma maquina = new Enigma('A' - 65, 'E' - 65, 'V' - 65);
-        Enigma maquina = new Enigma('A','A','A',1,2,3);
-        String texto = maquina.codificarTexto("AAAAAAAAAAA");
-        System.out.println(texto.equals("BDZGOWCXLT"));
+        Enigma maquina = new Enigma(args[0].charAt(0),args[0].charAt(1),args[0].charAt(2),Character.getNumericValue(args[0].charAt(3)),Character.getNumericValue(args[0].charAt(4)),Character.getNumericValue(args[0].charAt(5)),
+                Character.toUpperCase(args[1].charAt(0)), Character.toUpperCase(args[1].charAt(1)));
+        String texto = maquina.codificarTexto(args[2]);
         System.out.println(texto);
     }
 }

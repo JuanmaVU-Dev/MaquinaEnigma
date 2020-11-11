@@ -14,7 +14,7 @@ public class Rotor {
 
     public static final char[] Reflector = "YRUHQSLDPXNGOKMIEBFZCWVJAT".toCharArray();
 
-    public static char[] letras;
+    public char[] letras;
 
     public int letraClave;
 
@@ -22,9 +22,9 @@ public class Rotor {
         return posicion == letraClave;
     }
 
-//    public Rotor(char letraClave){
-//        this.letraClave = (letraClave - 'A');
-//    }
+    public Rotor(char letraClave){
+        this.letraClave = (letraClave - 'A');
+    }
 
     public Rotor(int tipoRotor) throws Exception {
         //Letras clave Royal Flags Wave Kings Above
@@ -32,27 +32,26 @@ public class Rotor {
         switch(tipoRotor){
             case 1:
                 this.letras = this.I;
-                this.letraClave = ('R' - 'A');
+                this.letraClave = 'R' - 65;
                 break;
             case 2:
                 this.letras = this.II;
-                this.letraClave = ('F' - 'A');
+                this.letraClave = 'F' - 65;
                 break;
             case 3:
                 this.letras = this.III;
-                this.letraClave = ('W' - 'A');
+                this.letraClave = 'W' - 65;
                 break;
             case 4:
                 this.letras = this.IV;
-                this.letraClave = ('K' - 'A');
+                this.letraClave = 'K' - 65;
                 break;
             case 5:
                 this.letras = this.V;
-                this.letraClave = ('A' - 'A');
+                this.letraClave = 'A' - 65;
                 break;
             default:
                 throw new Exception("Rotor inválido");
         }
-        this.letraClave = (letraClave - 'A');
     }
 }
