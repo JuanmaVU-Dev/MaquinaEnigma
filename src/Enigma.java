@@ -1,3 +1,7 @@
+import javax.security.auth.login.Configuration;
+import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 class Enigma {
 
     Rotor rotor1;
@@ -85,7 +89,7 @@ class Enigma {
         primeraPulsacion = false;
     }
 
-    public char codificarLetra(char letra) {
+    private char codificarLetra(char letra) {
         girarRotores();
         int indice;
         //System.out.println("----------- CLAVIJERO -----------");
@@ -153,7 +157,7 @@ class Enigma {
         return letraCodificada;
     }
 
-    private String codificarTexto(String texto) {
+    public String codificarTexto(String texto) {
         StringBuffer cadena = new StringBuffer();
         for (int i = 0; i < texto.length(); i++) {
             char letra = codificarLetra(Character.toUpperCase(texto.charAt(i)));
@@ -162,11 +166,49 @@ class Enigma {
         return cadena.toString();
     }
 
+    public void aplicarClave(Clave clave){
+        this.posicion1 = clave.posicion1;
+        this.posicion2 = clave.posicion2;
+        this.posicion3 = clave.posicion3;
+        this.primeraPulsacion = true;
+        this.clavija.letra1 = clave.letra1;
+        this.clavija.letra1 = clave.letra2;
+    }
+
     public static void main(String[] args) throws Exception {
-        Enigma maquina = new Enigma(args[0].charAt(0),args[0].charAt(1),args[0].charAt(2),
-                Character.getNumericValue(args[0].charAt(3)),Character.getNumericValue(args[0].charAt(4)),Character.getNumericValue(args[0].charAt(5)),
-                Character.toUpperCase(args[1].charAt(0)), Character.toUpperCase(args[1].charAt(1)));
-        String texto = maquina.codificarTexto(args[2]);
+        Enigma maquina = new Enigma('A','A','A',1,2,3,'A','A');
+        String texto = maquina.codificarTexto("AAAAAAAAAAAAAAAAAAAAAA");
+        String[] palabras = {"AMBIGUO","OBVIO","TRIVIAL", "ESTUPENDO", "ESTHER", "BUGZILLA", "LUGAR",
+                             "PACIFICO", "DIARREA", "HOLA", "MUNDO", "GARABATA", "CALABAZA", "HERPES",
+                             "CELULA", "PORRO", "SUAVES", "ALBACETE", "FIESTA", "PATATA"};
+        LinkedList<String> listaCodificaciones = new LinkedList<String>();
+        LinkedList<String> listaClaves = new LinkedList<String>();
+        Clave clave = new Clave();
+        for(int i=0;i<26;i++){
+            for(int j=0;j<26;j++){
+                for(int k=0;k<26;k++){
+                    for(int a=0;a<26;a++){
+                        for(int b=a+1;b<26;b++){
+                            clave.posicion1 = i;
+                            clave.posicion2 = j;
+                            clave.posicion3 = k;
+                            clave.letra1 = (char) (a+65);
+                            clave.letra2 = (char) (b+65);
+                            maquina.aplicarClave(clave);
+                            listaCodificaciones.add(maquina.codificarTexto("KHIVQBTCYRFAFWPLVSCAMMRFVDMSIIRRTRZTLAOMWHFQDTOFARWZYVPWPZBNKWAV"));
+                            listaClaves.add(clave.toString());
+                        }
+                    }
+
+                }
+            }
+        }
+        for(int i=0;i<listaCodificaciones.size();i++){
+            if(listaCodificaciones.get(i).contains("CALABAZA")){
+                    System.out.println(listaCodificaciones.get(i) + listaClaves.get(i));
+            }
+        }
+        System.out.println(listaCodificaciones.size());
         System.out.println(texto);
     }
 }
