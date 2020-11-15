@@ -189,26 +189,27 @@ class Enigma {
                 for(int k=0;k<26;k++){
                     for(int a=0;a<26;a++){
                         for(int b=a+1;b<26;b++){
-                            clave.posicion1 = i;
-                            clave.posicion2 = j;
-                            clave.posicion3 = k;
-                            clave.letra1 = (char) (a+65);
-                            clave.letra2 = (char) (b+65);
-                            maquina.aplicarClave(clave);
+                            maquina.posicion1 = i;
+                            maquina.posicion2 = j;
+                            maquina.posicion3 = k;
+                            maquina.primeraPulsacion = true;
+                            maquina.clavija.letra1 = (char) (a+65);
+                            maquina.clavija.letra2 = (char) (b+65);
                             listaCodificaciones.add(maquina.codificarTexto("KHIVQBTCYRFAFWPLVSCAMMRFVDMSIIRRTRZTLAOMWHFQDTOFARWZYVPWPZBNKWAV"));
-                            listaClaves.add(clave.toString());
+                            listaClaves.add((char)(i+65)+""+(char)(j+65)+""+(char)(k+65)+""+(char)(a+65)+""+(char) (b+65));
                         }
                     }
-
                 }
             }
         }
-        for(int i=0;i<listaCodificaciones.size();i++){
-            if(listaCodificaciones.get(i).contains("CALABAZA")){
-                    System.out.println(listaCodificaciones.get(i) + listaClaves.get(i));
+        for(String codificacion : listaCodificaciones){
+            for(String palabra : palabras){
+                if(codificacion.contains(palabra)){
+                    System.out.println(codificacion);
+                    System.out.println(listaClaves.get(listaCodificaciones.indexOf(codificacion)));
+                }
             }
         }
         System.out.println(listaCodificaciones.size());
-        System.out.println(texto);
     }
 }
