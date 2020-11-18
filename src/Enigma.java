@@ -177,13 +177,12 @@ class Enigma {
 
     public static void main(String[] args) throws Exception {
         Enigma maquina = new Enigma('A','A','A',1,2,3,'A','A');
-        String texto = maquina.codificarTexto("AAAAAAAAAAAAAAAAAAAAAA");
         String[] palabras = {"AMBIGUO","OBVIO","TRIVIAL", "ESTUPENDO", "ESTHER", "BUGZILLA", "LUGAR",
                              "PACIFICO", "DIARREA", "HOLA", "MUNDO", "GARABATA", "CALABAZA", "HERPES",
                              "CELULA", "PORRO", "SUAVES", "ALBACETE", "FIESTA", "PATATA"};
         LinkedList<String> listaCodificaciones = new LinkedList<String>();
         LinkedList<String> listaClaves = new LinkedList<String>();
-        Clave clave = new Clave();
+        long inicio = System.currentTimeMillis();
         for(int i=0;i<26;i++){
             for(int j=0;j<26;j++){
                 for(int k=0;k<26;k++){
@@ -195,21 +194,27 @@ class Enigma {
                             maquina.primeraPulsacion = true;
                             maquina.clavija.letra1 = (char) (a+65);
                             maquina.clavija.letra2 = (char) (b+65);
-                            listaCodificaciones.add(maquina.codificarTexto("KHIVQBTCYRFAFWPLVSCAMMRFVDMSIIRRTRZTLAOMWHFQDTOFARWZYVPWPZBNKWAV"));
-                            listaClaves.add((char)(i+65)+""+(char)(j+65)+""+(char)(k+65)+""+(char)(a+65)+""+(char) (b+65));
+                            String codificacion = maquina.codificarTexto("KHIVQBTCYRFAFWPLVSCAMMRFVDMSIIRRTRZTLAOMWHFQDTOFARWZYVPWPZBNKWAV");
+                            for(String palabra : palabras) {
+                                if (codificacion.contains(palabra)) {
+                                    listaCodificaciones.add(codificacion);
+                                    listaClaves.add((char)(i+65)+""+(char)(j+65)+""+(char)(k+65)+""+(char)(a+65)+""+(char) (b+65));
+                                }
+                            }
                         }
                     }
                 }
             }
         }
         for(String codificacion : listaCodificaciones){
-            for(String palabra : palabras){
-                if(codificacion.contains(palabra)){
                     System.out.println(codificacion);
                     System.out.println(listaClaves.get(listaCodificaciones.indexOf(codificacion)));
-                }
-            }
         }
+        long fin = System.currentTimeMillis();
+        double tiempo = (double) ((fin - inicio)/1000);
         System.out.println(listaCodificaciones.size());
+        System.out.println(tiempo +" segundos");
     }
+
+
 }
